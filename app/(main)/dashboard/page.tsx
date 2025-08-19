@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-// import { getUserAccounts } from "@/actions/dashboard";
+ import { getUserAccounts } from "@/actions/dashboard";
 // import { getDashboardData } from "@/actions/dashboard";
 // import { getCurrentBudget } from "@/actions/budget";
-// import { AccountCard } from "./_components/account-card";
+import { AccountCard } from "./_components/account-card";
 // import { CreateAccountDrawer } from ".@/components/create-account-drawer";
 // import { BudgetProgress } from "@/components/ui/budget-progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,12 +10,9 @@ import { Plus } from "lucide-react";
 // import { DashboardOverview } from "./_components/transaction-overview";
 import { CreateAccountDrawer } from "@/components/ui/create-account-drawer";
 export default async function DashboardPage() {
-  // const [accounts, transactions] = await Promise.all([
-  //   // getUserAccounts(),
-  //   // getDashboardData(),
-  // ]);
-
-  // const defaultAccount = accounts?.find((account) => account.isDefault);
+ const accounts:any=getUserAccounts();
+ const resolvedAccounts = await accounts;
+   const defaultAccount = resolvedAccounts?.find((account: any) => account.isDefault);
 
   // Get budget for default account
   // let budgetData = null;
@@ -47,10 +44,10 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </CreateAccountDrawer>
-        {/* {accounts.length > 0 &&
-          accounts?.map((account) => (
+        {resolvedAccounts && resolvedAccounts.length > 0 &&
+          resolvedAccounts?.map((account :any) => (
             <AccountCard key={account.id} account={account} />
-          ))} */}
+          ))}
       </div>
     </div>
   );
