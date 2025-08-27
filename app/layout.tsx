@@ -19,11 +19,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
     <html lang="en">
-      <body
-        className={`${inter.className}`}
-      >
-        <Header/>
-        <main className=" min-h-screen">
+      <body className={`${inter.className}`}
+      ><Header/>
+        <main className=" min-h-screen pt-20">
         {children}
         </main>
         <Toaster richColors />
