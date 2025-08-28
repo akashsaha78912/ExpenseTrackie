@@ -17,11 +17,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { updateBudget } from "@/actions/budget";
 
-export function BudgetProgress({ initialBudget, currentExpenses }) {
+interface BudgetProgressProps {
+  initialBudget?: { amount: number };
+  currentExpenses: number;
+}
+
+export function BudgetProgress({ initialBudget, currentExpenses }: BudgetProgressProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [newBudget, setNewBudget] = useState(
-    initialBudget?.amount?.toString() || ""
-  );
+  const [newBudget, setNewBudget] = useState(initialBudget?.amount?.toString() || "");
 
   const {
     loading: isLoading,
@@ -30,9 +33,7 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
     error,
   } = useFetch(updateBudget);
 
-  const percentUsed = initialBudget
-    ? (currentExpenses / initialBudget.amount) * 100
-    : 0;
+  const percentUsed = initialBudget ? (currentExpenses / initialBudget.amount) * 100 : 0;
 
   const handleUpdateBudget = async () => {
     const amount = parseFloat(newBudget);
@@ -51,7 +52,7 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
   };
 
   useEffect(() => {
-    if (updatedBudget?.success) {
+    if (updatedBudget) {
       setIsEditing(false);
       toast.success("Budget updated successfully");
     }
@@ -59,7 +60,7 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message || "Failed to update budget");
+      toast.error(error || "Failed to update budget");
     }
   }, [error]);
 
@@ -103,9 +104,7 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
               <>
                 <CardDescription>
                   {initialBudget
-                    ? `$${currentExpenses.toFixed(
-                        2
-                      )} of $${initialBudget.amount.toFixed(2)} spent`
+                    ? `$${currentExpenses.toFixed(2)} of $${initialBudget.amount.toFixed(2)} spent`
                     : "No budget set"}
                 </CardDescription>
                 <Button
@@ -126,14 +125,6 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
           <div className="space-y-2">
             <Progress
               value={percentUsed}
-              extraStyles={`${
-                // add to Progress component
-                percentUsed >= 90
-                  ? "bg-red-500"
-                  : percentUsed >= 75
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
-              }`}
             />
             <p className="text-xs text-muted-foreground text-right">
               {percentUsed.toFixed(1)}% used
