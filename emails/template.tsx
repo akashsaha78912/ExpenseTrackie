@@ -7,6 +7,7 @@ import {
   Preview,
   Section,
   Text,
+  
 } from "@react-email/components";
 import * as React from "react";
 
@@ -138,7 +139,7 @@ export default function EmailTemplate({
             )}
 
             <Text style={styles.footer}>
-              Thank you for using Welth. Keep tracking your finances for better
+              Thank you for using ExpenseTrackie. Keep tracking your finances for better
               financial health!
             </Text>
           </Container>
@@ -251,7 +252,7 @@ const styles = {
   footer: {
     color: "#6b7280",
     fontSize: "14px",
-    textAlign: "center", // Explicitly cast to 'center'
+    textAlign: "center" as React.CSSProperties['textAlign'],
     marginTop: "32px",
     paddingTop: "16px",
     borderTop: "1px solid #e5e7eb",
