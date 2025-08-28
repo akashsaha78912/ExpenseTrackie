@@ -5,15 +5,15 @@ import { TransactionTable } from "../_components/transaction-table";
 import { notFound } from "next/navigation";
  import { AccountChart } from "../_components/account-chart";
 
+
+
 type AccountPageProps = {
-  params: { id: string };
+  params: {
+    id: string;
+  };
 };
 
-type Props = {
-  params: { id: string }
-};
-
-export default async function AccountPage({ params }: Props) {
+export default async function AccountPage({ params }: AccountPageProps) {
   const accountData = await getAccountWithTransactions(params.id);
 
   if (!accountData) {
