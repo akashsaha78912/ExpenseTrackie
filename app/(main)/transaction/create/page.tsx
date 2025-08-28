@@ -3,7 +3,7 @@ import { defaultCategories } from "@/data/categories";
 import { AddTransactionForm } from "../_components/transaction-form";
 import { getTransaction } from "@/actions/transaction";
 
-export default async function AddTransactionPage({ searchParams }: { searchParams?: { edit?: string } }) {
+export default async function AddTransactionPage({ searchParams }: { searchParams?: { edit?: any } }) {
   const accounts = await getUserAccounts() || [];
   const editId = searchParams?.edit;
 
