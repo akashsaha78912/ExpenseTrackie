@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
  import { AccountChart } from "../_components/account-chart";
 
 type AccountPageProps = {
-  params: { id: any };
+  params: { id: string };
 };
 
 export default async function AccountPage({ params }: AccountPageProps) {
