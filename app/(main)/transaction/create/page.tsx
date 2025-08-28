@@ -3,10 +3,10 @@ import { defaultCategories } from "@/data/categories";
 import { AddTransactionForm } from "../_components/transaction-form";
 import { getTransaction } from "@/actions/transaction";
 
-export default async function AddTransactionPage({ searchParams }: { searchParams?: { edit?: any } }) {
-  const accounts = await getUserAccounts() || [];
-  const editId = searchParams?.edit;
-
+export default async function AddTransactionPage({ searchParams }: { searchParams?: Promise<{ edit?: string }> }) {
+ const resolvedSearchParams = searchParams? await searchParams :undefined;
+  const editId = resolvedSearchParams?.edit;
+const accounts = await getUserAccounts() || [];
   let initialData = null;
   if (editId) {
     const transaction = await getTransaction(editId);
