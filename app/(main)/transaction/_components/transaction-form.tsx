@@ -330,6 +330,7 @@ export function AddTransactionForm({
       )}
 
       {/* Actions */}
+      <div className="grid gap-6 md:grid-cols-2">
       <div className="flex gap-4">
         <Button
           type="button"
@@ -351,6 +352,7 @@ export function AddTransactionForm({
             "Create Transaction"
           )}
         </Button>
+      </div>
       </div>
     </form>
   );
