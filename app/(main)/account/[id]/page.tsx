@@ -12,8 +12,9 @@ type PageProps = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-export default async function AccountPage({ params }: PageProps) {
-  const id=Array.isArray(params.id)?params.id[0]:params.id;
+export default async function AccountPage({ params }: {params:any}) {
+  const resolveParams=await params;
+  const id=Array.isArray(resolveParams.id)?resolveParams.id[0]:resolveParams.id;
   const accountData = await getAccountWithTransactions(id);
 
   if (!accountData) {
