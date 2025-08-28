@@ -15,7 +15,7 @@ const serializeDecimal = (obj:any) => {
   }
   return serialized;
 };
-export async function updateDefaultAccount(accountId:string) {
+export async function updateDefaultAccount(id:string) {
     try {
       const { userId } = await auth();
       if (!userId) throw new Error("Unauthorized");
@@ -40,7 +40,7 @@ export async function updateDefaultAccount(accountId:string) {
       // Then set the new default account
       const account = await db.account.update({
         where: {
-          id: accountId,
+          id: id,
           userId: user.id,
         },
         data: { isDefault: true },
@@ -52,7 +52,7 @@ export async function updateDefaultAccount(accountId:string) {
       return { success: false, error: error.message };
     }
   }
-  export async function getAccountWithTransactions(accountId:string) {
+  export async function getAccountWithTransactions(id:string) {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized"); 
     const user = await db.user.findUnique({
@@ -63,7 +63,7 @@ export async function updateDefaultAccount(accountId:string) {
   
     const account = await db.account.findUnique({
       where: {
-        id: accountId,
+        id: id,
         userId: user.id,
       },
       include: {

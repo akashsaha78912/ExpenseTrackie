@@ -7,14 +7,14 @@ import { notFound } from "next/navigation";
 
 
 
-type AccountPageProps = {
-  params: {
-    id: string;
-  };
+type PageProps = {
+  params: Record<string, string[]>;
+  searchParams: Record<string, string | string[] | undefined>;
 };
 
-export default async function AccountPage({ params }: AccountPageProps) {
-  const accountData = await getAccountWithTransactions(params.id);
+export default async function AccountPage({ params }: PageProps) {
+  const id=Array.isArray(params.id)?params.id[0]:params.id;
+  const accountData = await getAccountWithTransactions(id);
 
   if (!accountData) {
     notFound();
