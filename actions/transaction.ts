@@ -6,16 +6,18 @@ import { revalidatePath } from "next/cache";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import aj from "@/lib/arcjet";
 import { request } from "@arcjet/next";
+import { $Enums } from "@/lib/generated/prisma";
+import { Decimal } from "@/lib/generated/prisma/runtime/library";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string) ;
 
-const serializeAmount = (obj) => ({
+const serializeAmount = (obj: { id: string; createdAt: Date; updatedAt: Date; type: $Enums.TransactionType; amount: Decimal; description: string | null; date: Date; category: string; receiptUrl: string | null; isRecurring: boolean; recurringInterval: $Enums.RecurringInterval | null; nextRecurringDate: Date | null; lastProcessed: Date | null; status: $Enums.TransactionStatus; userId: string; accountId: string; }) => ({
   ...obj,
   amount: obj.amount.toNumber(),
 });
 
-// Create Transaction
-export async function createTransaction(data) {
+// Create Transaction 
+export async function createTransaction(data: { accountId: any; type: string; amount: number; isRecurring: any; recurringInterval: any; date: string | number | Date; }) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
@@ -90,16 +92,16 @@ export async function createTransaction(data) {
       return newTransaction;
     });
 
-    revalidatePath("/dashboard");
+    revalidatePath("/dashboard"); 
     revalidatePath(`/account/${transaction.accountId}`);
 
     return { success: true, data: serializeAmount(transaction) };
-  } catch (error) {
+  } catch (error:any) {
     throw new Error(error.message);
   }
 }
 
-export async function getTransaction(id) {
+export async function getTransaction(id: string) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -121,7 +123,7 @@ export async function getTransaction(id) {
   return serializeAmount(transaction);
 }
 
-export async function updateTransaction(id, data) {
+export async function updateTransaction(id: string, data: any) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
@@ -189,7 +191,7 @@ export async function updateTransaction(id, data) {
     revalidatePath(`/account/${data.accountId}`);
 
     return { success: true, data: serializeAmount(transaction) };
-  } catch (error) {
+  } catch (error:any) {
     throw new Error(error.message);
   }
 }
@@ -222,13 +224,13 @@ export async function getUserTransactions(query = {}) {
     });
 
     return { success: true, data: transactions };
-  } catch (error) {
+  } catch (error:any) {
     throw new Error(error.message);
   }
 }
 
 // Scan Receipt
-export async function scanReceipt(file) {
+export async function scanReceipt(file: { arrayBuffer: () => any; type: any; }) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -291,7 +293,7 @@ export async function scanReceipt(file) {
 }
 
 // Helper function to calculate next recurring date
-function calculateNextRecurringDate(startDate, interval) {
+function calculateNextRecurringDate(startDate: string | number | Date, interval: any) {
   const date = new Date(startDate);
 
   switch (interval) {
