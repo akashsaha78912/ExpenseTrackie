@@ -17,14 +17,7 @@ const serializeAmount = (obj: { id: string; createdAt: Date; updatedAt: Date; ty
 });
 
 // Create Transaction 
-export async function createTransaction(data: { accountId: any; 
-  type: string; 
-  amount: number; 
-  isRecurring: any; 
-  recurringInterval: any; 
-  date: string | number | Date; 
-  category: string;
-}) {
+export async function createTransaction(data:any) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
@@ -79,17 +72,19 @@ export async function createTransaction(data: { accountId: any;
     const newBalance = account.balance.toNumber() + balanceChange;
 
     // Create transaction and update account balance
-    const transaction = await db.$transaction(async (tx) => {
-      const newTransaction = await tx.transaction.create({
-        data: {
-          ...data,
-          userId: user.id,
-          nextRecurringDate:
-            data.isRecurring && data.recurringInterval
-              ? calculateNextRecurringDate(data.date, data.recurringInterval)
-              : null,
-        },
-      });
+   const transaction = await db.$transaction(async (tx) => {
+  const newTransaction = await tx.transaction.create({
+    data: {
+      ...data,
+      type: $Enums.TransactionType[data.type as keyof typeof $Enums.TransactionType], // convert string to Prisma enum
+      category: data.category,
+      userId: user.id,
+      nextRecurringDate:
+        data.isRecurring && data.recurringInterval
+          ? calculateNextRecurringDate(data.date, data.recurringInterval)
+          : null,
+    },
+  });
 
       await tx.account.update({
         where: { id: data.accountId },
