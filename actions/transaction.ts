@@ -17,7 +17,14 @@ const serializeAmount = (obj: { id: string; createdAt: Date; updatedAt: Date; ty
 });
 
 // Create Transaction 
-export async function createTransaction(data: { accountId: any; type: string; amount: number; isRecurring: any; recurringInterval: any; date: string | number | Date; }) {
+export async function createTransaction(data: { accountId: any; 
+  type: string; 
+  amount: number; 
+  isRecurring: any; 
+  recurringInterval: any; 
+  date: string | number | Date; 
+  category: string;
+}) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
