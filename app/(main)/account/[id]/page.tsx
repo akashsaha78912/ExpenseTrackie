@@ -9,7 +9,11 @@ type AccountPageProps = {
   params: { id: string };
 };
 
-export default async function AccountPage({ params }: AccountPageProps) {
+type Props = {
+  params: { id: string }
+};
+
+export default async function AccountPage({ params }: Props) {
   const accountData = await getAccountWithTransactions(params.id);
 
   if (!accountData) {
